@@ -1,10 +1,7 @@
-const express = require('express');
-const helmet = require('helmet');
-
-const server = express();
+const server = require('./api/server');
+const express = require('express')
 
 server.use(express.json());
-server.use(helmet());
 
 // endpoints here
 
