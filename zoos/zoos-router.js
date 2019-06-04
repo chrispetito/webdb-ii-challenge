@@ -26,12 +26,38 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
+  const { name } = req.body;
   db.add(req.body)
     .then(zoo => {
-      res.status(201).json(zoo);
+      if (!name) {
+        res.status(404).json({ message: "The name field is required." });
+      } else {
+        res.status(201).json(zoo);
+      }
     })
     .catch(err => {
       res.status(500).json({ message: "Could not add zoo" });
+    });
+});
+
+router.put("/:id", (req, res) => {
+  db.update(req.params.id, req.body).then(response => {
+    res
+      .status(200)
+      .json({ message: "Zoo updated successfully" })
+      .catch(err => {
+        res.status(500).json(err);
+      });
+  });
+});
+
+router.delete("/:id", (req, res) => {
+  db.remove(req.params.id)
+    .then(count => {
+      res.status(200).json({ message: "Zoo has been successfully deleted" });
+    })
+    .catch(err => {
+      res.status(500).json(err);
     });
 });
 
